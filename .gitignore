@@ -1,0 +1,89 @@
+# --- OS / Editor junk ---
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+*.swp
+*.swo
+.nfs*
+*.orig
+*.rej
+
+# VS Code / JetBrains
+.vscode/
+.idea/
+
+# --- Python bytecode / caches ---
+__pycache__/
+*.py[cod]
+*$py.class
+.pyre/
+.pytype/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+
+# --- Packaging / build artifacts ---
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+*.whl
+
+# --- Coverage / test outputs ---
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# --- Logs / runtime outputs ---
+*.log
+logs/
+*.sqlite
+*.db
+*.db-journal
+
+# --- Local environment / secrets ---
+.env
+.env.*
+!*.example        # keep template env files if you use them
+secrets/
+*.pem
+*.key
+
+# --- Project-specific (Codebase Whisperer) ---
+# Local config overrides (keep config.py; ignore private/local variants)
+codebase_whisperer/config.local.py
+config.local.py
+
+# Indexing / cache outputs (if you persist generated chunks or indexes)
+.index/
+.cache/
+tmp/
+temp/
+*.tmp
+
+# Tree-sitter / native builds (if you compile grammars locally)
+# macOS dylib, Linux so, Windows dll
+*.dylib
+*.so
+*.dll
+build/ts-build/
+tree-sitter-build/
+ts-out/
+
+# Markdown site builders / docs outputs (optional)
+site/
+docs/_build/
+
+# Jupyter noise (if any)
+.ipynb_checkpoints/

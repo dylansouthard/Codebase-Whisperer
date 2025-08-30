@@ -1,0 +1,16 @@
+# Core dependencies
+lancedb>=0.6.0
+requests>=2.31.0
+tqdm>=4.66.0
+rich>=13.7.0
+pyyaml>=6.0.1
+pandas
+
+# Optional (nice to have, but script runs without them)
+uvloop>=0.19.0; sys_platform != "win32"
+tree-sitter>=0.21.0
+
+# Dev tools (linters, type checking, optional)
+mypy>=1.10.0
+ruff>=0.5.0
+pytest

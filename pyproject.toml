@@ -1,0 +1,21 @@
+[project]
+name = "codebase-whisperer"
+version = "0.1.0"
+requires-python = ">=3.9"
+packages = ["codebase_whisperer"]
+
+[project.dependencies]
+# keep runtime deps here later
+
+[tool.setuptools]
+package-dir = {"" = "."}
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "C0114",  # missing-module-docstring
+    "C0115",  # missing-class-docstring
+    "C0116",  # missing-function-docstring
+    "C0415",  # import-outside-toplevel
+    "C0301",  # line-too-long
+    "W0703",  # broad-except
+]

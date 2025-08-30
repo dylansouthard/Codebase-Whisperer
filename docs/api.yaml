@@ -1,0 +1,231 @@
+api:
+  format_version: 1
+  project: codebase_whisperer
+  modules:
+
+    chunking:
+      path: codebase_whisperer/chunking
+      exports:
+        - split_by_size
+        - get_ts_parser
+        - extract_defs
+        - chunk_defs_with_limits
+
+      functions:
+
+        split_by_size:
+          signature: "split_by_size(text: str, max_chars: int) -> list[str]"
+          description: "Split text into pieces not exceeding max_chars; order preserved; no trimming."
+          inputs:
+            text: {type: str, desc: "Text to split"}
+            max_chars: {type: int, desc: "Max characters per chunk"}
+          outputs:
+            return: {type: list[str], desc: "List of substrings in original order"}
+          errors: []
+          notes:
+            - "If max_chars <= 0, typically returns [text]."
+            - "Pure size-based; does not consider sentence/code boundaries."
+
+        get_ts_parser:
+          signature: "get_ts_parser(lang: str) -> Parser"
+          description: "Return cached Tree-sitter parser configured for language key."
+          inputs:
+            lang: {type: str, desc: "e.g. 'python', 'java', 'typescript', 'xml', 'markdown', etc."}
+          outputs:
+            return: {type: Parser, desc: "Tree-sitter parser instance"}
+          errors:
+            - "KeyError / ValueError if grammar not available in current build."
+          notes:
+            - "Parsers are cached per language."
+
+        extract_defs:
+          signature: "extract_defs(lang_name: str, parser: Parser, text: str, lang_node_map: Optional[dict]=None) -> list[tuple[str, str]]"
+          description: "Parse source with Tree-sitter and extract (symbol, snippet) definition pairs."
+          inputs:
+            lang_name: {type: str, desc: "Language hint (used for spec selection)"}
+            parser: {type: Parser, desc: "Tree-sitter parser"}
+            text: {type: str, desc: "Source code / markdown / xml string"}
+            lang_node_map: {type: dict|None, desc: "Optional override for per-language node spec"}
+          outputs:
+            return: {type: list[tuple[str, str]], desc: "List of (symbol_name, code_snippet) pairs"}
+          errors: []
+          notes:
+            - "Supports: java, kotlin, groovy, typescript, tsx, javascript, python, markdown, xml."
+            - "Deduplicates by (symbol, first-120-chars-of-snippet)."
+            - "Uses walkers in codebase_whisperer/chunking/walkers.py."
+            - "Symbols normalized (e.g., 'A.m', 'Greeter.greet', 'ns.mapper.select#id')."
+
+        chunk_defs_with_limits:
+          signature: "chunk_defs_with_limits(defs: list[tuple[str, str]], max_chars: int) -> list[tuple[str, Optional[str]]]"
+          description: "Split long snippets from defs into size-bounded chunks, preserving symbol association."
+          inputs:
+            defs: {type: list[(str,str)], desc: "Output from extract_defs"}
+            max_chars: {type: int, desc: "Max characters per chunk"}
+          outputs:
+            return: {type: list[(str, Optional[str])], desc: "(chunk, symbol) pairs"}
+          errors: []
+          notes:
+            - "Uses split_by_size internally."
+            - "Symbol is propagated to each emitted chunk."
+
+    db:
+      path: codebase_whisperer/db/io.py
+      exports:
+        - open_db
+        - ensure_table
+        - ensure_chunks
+        - ensure_vec_cache
+        - try_add_missing_columns
+        - load_vec_cache_map
+        - upsert_rows
+
+      functions:
+
+        open_db:
+          signature: "open_db(db_dir: str) -> lancedb.db.DBConnection"
+          description: "Open (and create if needed) a LanceDB database in the given directory."
+          inputs:
+            db_dir: {type: str, desc: "Filesystem path to the DB directory"}
+          outputs:
+            return: {type: DBConnection, desc: "LanceDB connection handle"}
+          errors: []
+          notes:
+            - "Ensures directory exists."
+
+        ensure_table:
+          signature: "ensure_table(db: DBConnection, name: str, schema: pa.Schema) -> Table"
+          description: "Open table if present; otherwise create with provided schema."
+          inputs:
+            db: {type: DBConnection, desc: "LanceDB connection"}
+            name: {type: str, desc: "Table name"}
+            schema: {type: pa.Schema, desc: "Arrow schema for table creation"}
+          outputs:
+            return: {type: Table, desc: "Opened or newly created table"}
+          errors: []
+          notes:
+            - "Does not create vector indexes on empty tables."
+
+        ensure_chunks:
+          signature: "ensure_chunks(db: DBConnection, table_name: str, embedding_dim: int) -> Table"
+          description: "Create or open the chunks table using chunks_schema(embedding_dim)."
+          inputs:
+            db: {type: DBConnection}
+            table_name: {type: str}
+            embedding_dim: {type: int}
+          outputs:
+            return: {type: Table}
+          errors: []
+          notes: []
+
+        ensure_vec_cache:
+          signature: "ensure_vec_cache(db: DBConnection, embedding_dim: int) -> Table"
+          description: "Ensure the 'vec_cache' table exists with vec_cache_schema(embedding_dim)."
+          inputs:
+            db: {type: DBConnection}
+            embedding_dim: {type: int}
+          outputs:
+            return: {type: Table}
+          errors: []
+          notes: []
+
+        try_add_missing_columns:
+          signature: "try_add_missing_columns(tbl: Table, columns: dict[str, pa.DataType]) -> None"
+          description: "Best-effort migration to add missing columns to an existing LanceDB table."
+          inputs:
+            tbl: {type: Table, desc: "Target table"}
+            columns: {type: dict[str, pa.DataType], desc: "Column name → Arrow type to ensure exists"}
+          outputs:
+            return: {type: null}
+          errors: ["Migration may no-op if connection/name introspection fails"]
+          notes:
+            - "Prefers tbl.add_column if available."
+            - "Otherwise recreates table with widened schema (overwrite or drop+create)."
+            - "Attempts to refresh original 'tbl' handle by swapping internals."
+
+        load_vec_cache_map:
+          signature: "load_vec_cache_map(vcache_tbl: Table, model: str) -> dict[str, list[float]]"
+          description: "Build {chunk_sha: vector} map for the specified model; normalizes float precision."
+          inputs:
+            vcache_tbl: {type: Table}
+            model: {type: str, desc: "Embedding model identifier"}
+          outputs:
+            return: {type: dict[str, list[float]], desc: "chunk_sha → vector (floats rounded to 6 decimals)"}
+          errors: []
+          notes:
+            - "Reads entire table to Arrow then pylist; filters in Python."
+
+        upsert_rows:
+          signature: "upsert_rows(tbl: Table, rows: list[dict], on: str | list[str]) -> None"
+          description: "Insert/update rows keyed by 'on'; supports multiple LanceDB merge_insert signatures."
+          inputs:
+            tbl: {type: Table}
+            rows: {type: list[dict], desc: "Rows to insert or update"}
+            on: {type: str|list[str], desc: "Primary key column(s)"}
+          outputs:
+            return: {type: null}
+          errors: []
+          notes:
+            - "Tries (data=..., on=...), (rows, on=...), and (on=..., values=...) variants."
+            - "Fallback: manual upsert by delete where key IN (...) then add."
+            - "No-op if rows is empty."
+
+    ollama:
+      path: codebase_whisperer/ollama.py
+      exports:
+        - OllamaError
+        - OllamaClient
+
+      classes:
+
+        OllamaError:
+          type: Exception
+          extends: RuntimeError
+          description: "Raised when Ollama API calls fail after retries."
+          methods: {}
+
+        OllamaClient:
+          description: "Client wrapper for interacting with an Ollama API server."
+          init:
+            signature: "__init__(host: str, timeout: float = 30.0, retries: int = 2, backoff: float = 0.5)"
+            args:
+              host: {type: str, desc: "Base URL of the Ollama server, e.g. 'http://localhost:11434'"}
+              timeout: {type: float, desc: "Request timeout in seconds"}
+              retries: {type: int, desc: "Number of retry attempts on failure"}
+              backoff: {type: float, desc: "Exponential backoff base in seconds"}
+            returns: OllamaClient
+
+          methods:
+
+            _post:
+              visibility: private
+              signature: "_post(path: str, payload: dict, stream: bool = False) -> requests.Response"
+              description: "Makes a POST request with retries and exponential backoff."
+              args:
+                path: {type: str, desc: "API endpoint path (e.g. '/api/chat')"}
+                payload: {type: dict, desc: "JSON body to send"}
+                stream: {type: bool, desc: "Whether to stream response"}
+              returns: {type: requests.Response, desc: "Raw response object"}
+              errors: ["OllamaError on repeated failure"]
+
+            embed:
+              signature: "embed(model: str, texts: list[str]) -> list[list[float]]"
+              description: "Request embeddings from Ollama’s `/api/embeddings` endpoint."
+              args:
+                model: {type: str, desc: "Model name for embeddings"}
+                texts: {type: list[str], desc: "List of input strings"}
+              returns: {type: list[list[float]], desc: "Embedding vectors (one per input text)"}
+              errors: ["OllamaError if embedding request fails"]
+
+            chat:
+              signature: "chat(model: str, messages: list[dict[str, str]], stream: bool = True, on_chunk: Optional[Callable[[str], None]] = None) -> str"
+              description: |
+                Chat with the Ollama model.
+                - If `stream=False`, returns the full response string.
+                - If `stream=True`, streams chunks via callback and accumulates the final string.
+              args:
+                model: {type: str, desc: "Model name to use for chat"}
+                messages: {type: list[dict[str,str]], desc: "Conversation messages with role and content"}
+                stream: {type: bool, desc: "Stream output incrementally (default True)"}
+                on_chunk: {type: callable|None, desc: "Callback for streaming chunks"}
+              returns: {type: str, desc: "Full response text"}
+              errors: ["OllamaError if chat request fails"]
