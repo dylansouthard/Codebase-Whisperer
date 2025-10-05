@@ -1,4 +1,4 @@
-from codebase_whisperer.ollama import OllamaClient
+from codebase_whisperer.llm.ollama import OllamaClient
 
 def main():
     client = OllamaClient("http://localhost:11434")

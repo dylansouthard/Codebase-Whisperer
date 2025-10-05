@@ -1,0 +1,23 @@
+[
+  { "contentType": "CONDITION_UPDATE", "newValue": "NURSING_SELF" },
+  { "contentType": "CONDITION_UPDATE", "newValue": "NURSING_OFFSPRING" },
+  { "contentType": "CONDITION_UPDATE", "newValue": "PREGNANT" },
+  { "contentType": "CONDITION_UPDATE", "newValue": "HEALTHY" },
+  { "contentType": "CARE_EVENT", "newValue": "FED" },
+  { "contentType": "CARE_EVENT", "newValue": "PLAYED" },
+  { "contentType": "CARE_EVENT", "newValue": "VACCINATED" },
+  { "contentType": "CARE_EVENT", "newValue": "STERILIZED" },
+  { "contentType": "CARE_EVENT", "newValue": "VET" },
+  { "contentType": "CARE_EVENT", "newValue": "MEDICATED" },
+  { "contentType": "STATUS_UPDATE", "newValue": "ADOPTED" },
+  { "contentType": "STATUS_UPDATE", "newValue": "OWNER_UNKNOWN" },
+  { "contentType": "STATUS_UPDATE", "newValue": "STRAY" },
+  { "contentType": "PROFILE_UPDATE", "newValue": { "name": "Kuro" } },
+  { "contentType": "PROFILE_UPDATE", "newValue": { "born": "2020-05-01" } },
+  { "contentType": "PROFILE_UPDATE", "newValue": { "description": "Super duper cute" } },
+  { "contentType": "PROFILE_IMG_UPDATE", "newValue": "https://www.myphoto.com/mochi.jpg" },
+  { "contentType": "PROFILE_IMG_UPDATE", "newValue": "https://www.myphoto.com/socks.jpg" },
+  { "contentType": "PROFILE_IMG_UPDATE", "newValue": "https://www.myphoto.com/chibi.jpg" },
+  { "contentType": "PROFILE_UPDATE", "newValue": { "sex": "MALE" } },
+  { "contentType": "PROFILE_UPDATE", "newValue": { "hasCollar": true } }
+]

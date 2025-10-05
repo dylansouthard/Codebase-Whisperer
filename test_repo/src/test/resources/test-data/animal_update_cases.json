@@ -1,0 +1,266 @@
+[
+  {
+    "desc": "Update field: name by non-primary caretaker with original value of Amelie",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "name": "Amelie"
+    },
+    "updates": {
+      "name": "Sabi"
+    },
+    "shouldSucceed": false,
+    "throwsError": "AUTH_FORBIDDEN"
+  },
+  {
+    "desc": "Update field: name by primary caretaker  with original value of Amelie",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "name": "Amelie"
+    },
+    "updates": {
+      "name": "Sabi"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: description by non-primary caretaker with original value of This dog has a big head",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "description": "This dog has a big head"
+    },
+    "updates": {
+      "description": "This dog is majestic"
+    },
+    "shouldSucceed": false,
+    "throwsError": "AUTH_FORBIDDEN"
+  },
+  {
+    "desc": "Update field: description by primary caretaker  with original value of This dog has a big head",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "description": "This dog has a big head"
+    },
+    "updates": {
+      "description": "This dog is majestic"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: description by non-primary caretaker with original value of ",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "description": ""
+    },
+    "updates": {
+      "description": "This dog is majestic"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: dangerous by non-primary caretaker with original value of true",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "dangerous": true
+    },
+    "updates": {
+      "dangerous": false
+    },
+    "shouldSucceed": false,
+    "throwsError": "AUTH_FORBIDDEN"
+  },
+  {
+    "desc": "Update field: dangerous by primary caretaker  with original value of true",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "dangerous": true
+    },
+    "updates": {
+      "dangerous": false
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: dangerous by non-primary caretaker with original value of false",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "dangerous": false
+    },
+    "updates": {
+      "dangerous": false
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: imgUrl by non-primary caretaker with original value of https://example.com/kittycat.jpg",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "imgUrl": "https://example.com/kittycat.jpg"
+    },
+    "updates": {
+      "imgUrl": "https://example.com/superdog.jpg"
+    },
+    "shouldSucceed": false,
+    "throwsError": "AUTH_FORBIDDEN"
+  },
+  {
+    "desc": "Update field: imgUrl by primary caretaker  with original value of https://example.com/kittycat.jpg",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "imgUrl": "https://example.com/kittycat.jpg"
+    },
+    "updates": {
+      "imgUrl": "https://example.com/superdog.jpg"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: imgUrl by non-primary caretaker with original value of null",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "imgUrl": null
+    },
+    "updates": {
+      "imgUrl": "https://example.com/superdog.jpg"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: location by non-primary caretaker with original value of [object Object]",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "location": {
+        "latitude": 34.7385,
+        "longitude": 135.3415
+      }
+    },
+    "updates": {
+      "location": {
+        "latitude": 34.7391,
+        "longitude": 135.3421
+      }
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: location by primary caretaker  with original value of [object Object]",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "location": {
+        "latitude": 34.7385,
+        "longitude": 135.3415
+      }
+    },
+    "updates": {
+      "location": {
+        "latitude": 34.7391,
+        "longitude": 135.3421
+      }
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: sex by non-primary caretaker with original value of FEMALE",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "sex": "FEMALE"
+    },
+    "updates": {
+      "sex": "MALE"
+    },
+    "shouldSucceed": false,
+    "throwsError": "AUTH_FORBIDDEN"
+  },
+  {
+    "desc": "Update field: sex by primary caretaker  with original value of FEMALE",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "sex": "FEMALE"
+    },
+    "updates": {
+      "sex": "MALE"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: sex by non-primary caretaker with original value of UNKNOWN",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "sex": "UNKNOWN"
+    },
+    "updates": {
+      "sex": "MALE"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: hasCollar by non-primary caretaker with original value of false",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "hasCollar": false
+    },
+    "updates": {
+      "hasCollar": true
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: hasCollar by primary caretaker  with original value of false",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "hasCollar": false
+    },
+    "updates": {
+      "hasCollar": true
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: born by non-primary caretaker with original value of 2021-01-01",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "born": "2021-01-01"
+    },
+    "updates": {
+      "born": "2020-01-01"
+    },
+    "shouldSucceed": false,
+    "throwsError": "AUTH_FORBIDDEN"
+  },
+  {
+    "desc": "Update field: born by primary caretaker  with original value of 2021-01-01",
+    "userIsPrimaryCaretaker": true,
+    "originalValues": {
+      "born": "2021-01-01"
+    },
+    "updates": {
+      "born": "2020-01-01"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: born by non-primary caretaker with original value of null",
+    "userIsPrimaryCaretaker": false,
+    "originalValues": {
+      "born": null
+    },
+    "updates": {
+      "born": "2020-01-01"
+    },
+    "shouldSucceed": true,
+    "throwsError": null
+  }
+]

@@ -16,12 +16,12 @@ def chunks_schema(embedding_dim: int) -> pa.schema:
         ("sha256", pa.string()),      # file-byte hash of REAL file
         ("content_sha", pa.string()), # sha256(text content)
         ("mtime", pa.float64()),
-         ("vector", pa.list_(pa.float32())),  # embedding vector,  # embedding vector
+        ("vector", pa.list_(pa.float32(), embedding_dim)),# embedding vector,  # embedding vector
     ])
 
 def vec_cache_schema(embedding_dim: int) -> pa.schema:
     return pa.schema([
         ("chunk_sha", pa.string()),   # content_sha
         ("model", pa.string()),
-        ("vector", pa.list_(pa.float32())),
+        ("vector", pa.list_(pa.float32(), embedding_dim)),
     ])

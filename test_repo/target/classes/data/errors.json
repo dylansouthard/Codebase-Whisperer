@@ -1,0 +1,205 @@
+{
+  "ANIMAL_NOT_FOUND": {
+    "message": {
+      "en": "No animal found.",
+      "th": "ไม่พบสัตวตัวนี้"
+    },
+    "status": 404
+  },
+  "ANIMAL_NOT_ON_WATCHLIST": {
+    "message": {
+      "en": "Animal or litter not found on your watchlist.",
+      "th": "ไม่พบสัตว์หรือขยะในรายการดูแลของคุณ"
+    },
+    "status": 404
+  },
+  "AUTH": {
+    "message": {
+      "en": "Unauthorized. Please log in and try again.",
+      "th": "ไม่ได้รับอนุมัติ โปรดเข้าสู่ระบบและลองใหม่อีกครั้ง"
+    },
+    "status": 401
+  },
+  "AUTH_FORBIDDEN": {
+    "message": {
+      "en": "This request shall not pass! You are not authorized to perform this action.",
+      "th": "คุณไม่มีสิทธิ์ดำเนินการนี้"
+    },
+    "status": 403
+  },
+  "INVALID_TOKEN": {
+    "message": {
+      "en": "The token is invalid or has expired.",
+      "th": "โทเค็นไม่ถูกต้องหรือหมดอายุแล้ว"
+    },
+    "status": 401
+  },
+  "CARE_EVENTS_NOT_FOUND": {
+    "message": {
+      "en": "No care events found.",
+      "th": "No care events found."
+    },
+    "status": 404
+  },
+  "CANNOT_SAVE_IMAGE": {
+    "message": {
+      "en": "The image could not be saved. Please try again.",
+      "th": "ไม่สามารถบันทึกรูปภาพได้ โปรดลองอีกครั้ง"
+    },
+    "status": 500
+  },
+  "COULD_NOT_DELETE": {
+    "message": {
+      "en": "The item could not be deleted.",
+      "th": "ไม่สามารถลบรายการได้"
+    },
+    "status": 500
+  },
+  "DELETE_VERIFIED_STERILIZATION_EVENT": {
+    "message": {
+      "en": "Deleting a verified sterilization event is not allowed.",
+      "th": "ไม่อนุญาตให้ลบเหตุการณ์การทำหมันที่ได้รับการยืนยัน"
+    },
+    "status": 403
+  },
+  "DUPLICATE_VACCINATION_EVENT": {
+    "message": {
+      "en": "A vaccination event of this type has already been registered recently. Please check the records before registering a new event.",
+      "th": "เหตุการณ์การฉีดวัคซีนประเภทนี้ได้ถูกลงทะเบียนไว้แล้วเมื่อไม่นานมานี้ กรุณาตรวจสอบบันทึกก่อนที่จะลงทะเบียนเหตุการณ์ใหม่"
+    },
+    "status": 409
+  },
+  "FAILED_LOGOUT": {
+    "message": {
+      "en": "Could not log out the user",
+      "th": "Could not log out the user"
+    },
+    "status": 400
+  },
+  "FAILED_TO_FETCH": {
+    "message": {
+      "en": "Could not fetch the requested item",
+      "th": "Could not fetch the requested item"
+    },
+    "status": 500
+  },
+  "NOTIFICATIONS_FETCH_ERROR": {
+    "message": {
+      "en": "Error fetching notification. Please try again later.",
+      "th": "เกิดข้อผิดพลาดในการดึงข้อมูลไอเท็มฟีด โปรดลองใหม่อีกครั้งในภายหลัง"
+    },
+    "status": 500
+  },
+  "INTERNAL_SERVER_ERROR": {
+    "message": {
+      "en": "An unexpected error occurred.",
+      "th": "เกิดข้อผิดพลาดที่ไม่คาดคิด"
+    },
+    "status": 500
+  },
+  "INVALID_COORDINATES": {
+    "message": {
+      "en": "Invalid Coordinates.",
+      "th": "Invalid Coordinates"
+    },
+    "status": 400
+  },
+  "INVALID_CREATE": {
+    "message": {
+      "en": "Could not save data. Some required fields may be missing",
+      "th": "ไม่สามารถบันทึกข้อมูลได้ มีบางข้อมูลหายไป"
+    },
+    "status": 400
+  },
+  "INVALID_PARAMS": {
+    "message": {
+      "en": "The query is missing the required parameters.",
+      "th": "The query is missing the required parameters."
+    },
+    "status": 400
+  },
+  "INVALID_VERIFICATION": {
+    "message": {
+      "en": "Verification could not be completed. The item may have already been verified or may not currently require verification.",
+      "th": "ไม่สามารถเสร็จสิ้นกระบวนการยืนยัน อาจเป็นเพราะรายการนี้ได้รับการยืนยันแล้วหรือไม่อยู่ในขั้นตอนที่ต้องการการยืนยัน"
+    },
+    "status": 400
+  },
+  "INVALID_UPDATE": {
+    "message": {
+      "en": "Could not update data.",
+      "th": "ไม่สามารถบันทึกข้อมูลได้"
+    },
+    "status": 400
+  },
+  "ITEM_EXISTS": {
+    "message": {
+      "en": "Could not create the item as it already exists",
+      "th": "Could not create the item as it already exists"
+    },
+    "status": 409
+  },
+  "MISSING_IMAGE": {
+    "message": {
+      "en": "Image is required for this action.",
+      "th": "จำเป็นต้องมีรูปภาพสำหรับการดำเนินการนี้"
+    },
+    "status": 400
+  },
+  "IMAGE_PROCESSING_ERROR": {
+    "message": {
+      "en": "An error occurred while processing the image. ",
+      "th": "เกิดข้อผิดพลาดขณะประมวลผลภาพ"
+    },
+    "status": 500
+  },
+  "INVALID_IMAGE_FORMAT": {
+    "message": {
+      "en": "The uploaded file is not in a supported image format.",
+      "th": "ไฟล์ที่อัปโหลดไม่ใช่รูปภาพที่รองรับ"
+    },
+    "status": 400
+  },
+  "MISSING_DEVICE_ID": {
+    "message": {
+      "en": "Device ID is required.",
+      "th": "จำเป็นต้องมีรหัสอุปกรณ์"
+    },
+    "status": 400
+  },
+  "NO_VACCINATION_FOUND": {
+    "message": {
+      "en": "No vaccination found with the given id, so it could not be removed.",
+      "th": "ไม่พบวัคซีนที่มี id ที่กำหนด จึงไม่สามารถลบได้"
+    },
+    "status": 404
+  },
+  "RECENT_CARE_EVENT_EXISTS": {
+    "message": {
+      "en": "A similar care event has been registered for this litter by the same user within the past two hours. Please try again later.",
+      "th": "เหตุการณ์ดูแลที่คล้ายกันได้ถูกลงทะเบียนสำหรับขยะนี้โดยผู้ใช้เดียวกันภายในสองชั่วโมงที่ผ่านมา โปรดลองอีกครั้งในภายหลัง"
+    },
+    "status": 429
+  },
+  "UNKNOWN_PROVIDER": {
+    "message": {
+      "en": "The authentication provider is not recognized.",
+      "th": "ไม่รู้จักผู้ให้บริการการยืนยันตัวตนนี้"
+    },
+    "status": 400
+  },
+  "UPLOAD_ERROR": {
+    "message": {
+      "en": "Failed to upload or convert the image. Please try again.",
+      "th": "การอัปโหลดหรือแปลงไฟล์ภาพล้มเหลว โปรดลองอีกครั้ง"
+    },
+    "status": 500
+  },
+  "USER_NOT_FOUND": {
+    "message": {
+      "en": "No user found.",
+      "th": "ไม่พบบัญชีผู้ใช่นี้"
+    },
+    "status": 404
+  }
+}

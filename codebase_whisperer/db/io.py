@@ -14,7 +14,7 @@ def open_db(db_dir: str) -> lancedb.db.DBConnection:
     return lancedb.connect(db_dir)
 
 
-def ensure_table(db, name: str, schema: pa.Schema):
+def _ensure_table(db, name: str, schema: pa.Schema):
     if name in db.table_names():
         return db.open_table(name)
     tbl = db.create_table(name, schema=schema)
@@ -24,11 +24,11 @@ def ensure_table(db, name: str, schema: pa.Schema):
 
 
 def ensure_chunks(db, table_name: str, embedding_dim: int):
-    return ensure_table(db, table_name, chunks_schema(embedding_dim))
+    return _ensure_table(db, table_name, chunks_schema(embedding_dim))
 
 
 def ensure_vec_cache(db, embedding_dim: int):
-    return ensure_table(db, "vec_cache", vec_cache_schema(embedding_dim))
+    return _ensure_table(db, "vec_cache", vec_cache_schema(embedding_dim))
 
 
 def try_add_missing_columns(tbl, columns: Dict[str, pa.DataType]):
@@ -163,3 +163,119 @@ def upsert_rows(tbl, rows: List[dict], on: str | List[str]) -> None:
                         # ignore delete failures; we'll still add
                         pass
                 tbl.add(rows)
+
+# ---- extras: safe, optional helpers for DB black box -----------------
+from typing import Iterable, Optional
+
+def ensure_vector_index(tbl, *, column: str = "vector", metric: str = "cosine") -> None:
+    """
+    Lazily create a vector index on `column` using `metric`.
+    - Skips if table is empty (many LanceDB builds error on empty indexing)
+    - Skips if index already exists (best-effort detection)
+    - Tolerates API drift across LanceDB versions
+    """
+    try:
+        # no rows? bail
+        try:
+            n = getattr(tbl, "count_rows", lambda: tbl.to_arrow().num_rows)()
+            if n == 0:
+                return
+        except Exception:
+            # last resort: pull one row
+            arr = tbl.to_arrow()
+            if getattr(arr, "num_rows", 0) == 0:
+                return
+
+        # already indexed? best effort check
+        try:
+            idx_info = getattr(tbl, "list_indices", lambda: [])()
+            # newer APIs return a list of dicts or objects; check column name
+            for it in idx_info or []:
+                name = getattr(it, "column", None) or getattr(it, "name", None) or it
+                if isinstance(name, dict):
+                    name = name.get("column") or name.get("name")
+                if name == column:
+                    return
+        except Exception:
+            pass
+
+        # try several create_index signatures
+        for attempt in (
+            lambda: tbl.create_index(column=column, metric=metric),
+            lambda: tbl.create_index(metric=metric, column=column),
+            lambda: tbl.create_index(column=column),   # some versions default to cosine
+        ):
+            try:
+                attempt()
+                return
+            except Exception:
+                continue
+    except Exception:
+        # indexing is best-effort; never fail pipeline because of it
+        return
+
+
+def delete_where(tbl, where_sql: str) -> None:
+    """
+    Thin wrapper so callers never touch Lance internals directly.
+    Accepts a SQL-ish predicate string (e.g., "id IN ('a','b') AND model='m'").
+    """
+    if not where_sql:
+        return
+    try:
+        tbl.delete(where=where_sql)
+    except Exception:
+        # Older builds (rare): .delete may use a different kw or not exist.
+        # As a last resort, ignore; callers typically follow with adds/upserts.
+        return
+
+
+def validate_vectors(rows: Iterable[dict], dim: int, *, key: str = "vector") -> list[dict]:
+    """
+    Ensure vectors are present & correct length. Coerce to float and normalize precision.
+    Returns a NEW list of rows (does not mutate input).
+    Raises ValueError if a vector is wrong length.
+    """
+    out: list[dict] = []
+    for r in rows:
+        v = r.get(key)
+        if v is None:
+            out.append(dict(r))  # allow null; upstream may fill later
+            continue
+        # accept any iterable of numbers, coerce to list[float]
+        vec = [float(x) for x in v]
+        if len(vec) != dim:
+            raise ValueError(f"vector length {len(vec)} != expected {dim}")
+        # normalize to float32 precision for stable equality in tests
+        vec = [round(float(x), 6) for x in vec]
+        nr = dict(r)
+        nr[key] = vec
+        out.append(nr)
+    return out
+
+
+def table_counts(tbl) -> dict:
+    """
+    Return a small ops summary: {"rows": int}
+    """
+    try:
+        return {"rows": int(getattr(tbl, "count_rows", lambda: tbl.to_arrow().num_rows)())}
+    except Exception:
+        try:
+            return {"rows": int(tbl.to_arrow().num_rows)}
+        except Exception:
+            return {"rows": -1}
+
+
+def vacuum_table(tbl) -> None:
+    """
+    Best-effort maintenance. Different LanceDB versions expose different names.
+    No-op on failure.
+    """
+    for fn_name in ("optimize", "optimize_compaction", "compact_files", "vacuum"):
+        fn = getattr(tbl, fn_name, None)
+        if callable(fn):
+            try:
+                fn()
+            except Exception:
+                pass

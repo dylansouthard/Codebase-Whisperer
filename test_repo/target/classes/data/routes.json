@@ -1,0 +1,80 @@
+{
+  "api": {
+    "animals": {
+      "_base": "/api/animals",
+      "create": {
+        "_path": "/api/animals",
+        "methods": ["POST"]
+      },
+      "nearby": {
+        "_path": "/api/animals/nearby",
+        "methods": ["GET"]
+      },
+      "care_events": {
+        "_path": "/api/animals/:id/care-events",
+        "methods":["GET", "POST"]
+      },
+      "detail": {
+        "_path": "/api/animals/:id",
+        "methods": ["GET", "PATCH", "DELETE"]
+      },
+      "image": {
+        "_path": "/api/animals/:id/image",
+        "methods": ["PATCH"]
+      }
+    },
+    "users": {
+      "_base": "/api/users",
+      "detail": {
+        "_path": "/api/users/:id",
+        "methods": ["GET"]
+      },
+      "me": {
+        "_path": "/api/users/me",
+        "methods": ["GET", "PATCH", "DELETE"]
+      },
+      "my_watchlist": {
+        "_path": "/api/users/me/watchlist",
+        "methods": ["GET", "PATCH"]
+      },
+      "watchlist": {
+        "_path": "/api/users/:id/watchlist",
+        "methods": ["GET"]
+      }
+    },
+    "auth": {
+      "_base": "/api/auth",
+      "status": {
+        "_path": "/api/auth/status",
+        "methods": ["GET"]
+      },
+      "refresh": {
+        "_path": "/api/auth/refresh",
+        "methods": ["POST"]
+      },
+      "revoke": {
+        "_path": "/api/auth/revoke",
+        "methods": ["DELETE"]
+      },
+      "revoke_all": {
+        "_path": "/api/auth/revoke-all",
+        "methods": ["DELETE"]
+      },
+      "oauth": {
+        "_path": "/api/auth/:provider",
+        "methods": ["GET"]
+      },
+      "oauth_callback": {
+        "_path": "/api/auth/:provider/callback",
+        "methods": ["GET"]
+      }
+    },
+    "notifications": {
+      "_base": "/api/notifications",
+      "sync": {
+        "_path": "/api/notifications/sync",
+        "methods": ["GET"]
+      }
+    }
+  }
+}

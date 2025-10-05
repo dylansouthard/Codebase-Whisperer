@@ -1,6 +1,6 @@
 # codebase_whisperer/chunking/t_sitter/walkers.py
 from __future__ import annotations
-from typing import Any, Dict, Iterable, List, Optional, Callable
+from typing import Any, List, Optional, Callable
 
 from .util import node_text, child_text_by_type, heading_text
 from .xml import xml_start_tag, xml_tag_name, xml_attr_value, xml_fallback_tag_name

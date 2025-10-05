@@ -1,0 +1,62 @@
+[
+  {
+    "desc": "Update field: displayName to EvenCoolerUser99",
+    "originalValues": {
+      "displayName": "CoolUser42"
+    },
+    "updates": {
+      "displayName": "EvenCoolerUser99"
+    },
+    "nullable": false,
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: displayName to null",
+    "originalValues": {
+      "displayName": "CoolUser42"
+    },
+    "updates": {
+      "displayName": null
+    },
+    "nullable": false,
+    "shouldSucceed": false,
+    "throwsError": "INVALID_PARAMS"
+  },
+  {
+    "desc": "Update field: displayName to ",
+    "originalValues": {
+      "displayName": "CoolUser42"
+    },
+    "updates": {
+      "displayName": ""
+    },
+    "nullable": false,
+    "shouldSucceed": false,
+    "throwsError": "INVALID_PARAMS"
+  },
+  {
+    "desc": "Update field: email to cooler@example.com",
+    "originalValues": {
+      "email": "cool@example.com"
+    },
+    "updates": {
+      "email": "cooler@example.com"
+    },
+    "nullable": true,
+    "shouldSucceed": true,
+    "throwsError": null
+  },
+  {
+    "desc": "Update field: intro to Now even friendlier.",
+    "originalValues": {
+      "intro": "Just a friendly user."
+    },
+    "updates": {
+      "intro": "Now even friendlier."
+    },
+    "nullable": true,
+    "shouldSucceed": true,
+    "throwsError": null
+  }
+]

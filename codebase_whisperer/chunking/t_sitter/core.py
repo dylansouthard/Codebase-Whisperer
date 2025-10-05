@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple, Any
 
 from ..common import split_by_size
-from .util import node_text, child_text_by_type
+from .util import node_text
 
 from .lang_nodes import LANG_NODE_MAP
 from .walkers import walk_code, walk_markdown, walk_xml, normalize_sym

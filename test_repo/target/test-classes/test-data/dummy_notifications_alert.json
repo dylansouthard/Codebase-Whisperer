@@ -1,0 +1,17 @@
+[
+  { "contentType": "CONDITION_UPDATE", "priority": "HIGH", "newValue": "ILL" },
+  { "contentType": "CONDITION_UPDATE", "priority": "HIGH", "newValue": "INJURED" },
+  { "contentType": "CONDITION_UPDATE", "priority": "HIGH", "newValue": "PARASITES" },
+  { "contentType": "CONDITION_UPDATE", "priority": "MEDIUM", "newValue": "UNDERFED" },
+  { "contentType": "STATUS_UPDATE", "priority": "HIGH", "newValue": "MISSING" },
+  { "contentType": "STATUS_UPDATE", "priority": "HIGH", "newValue": "DECEASED" },
+  { "contentType": "NOT_FED", "priority": "MEDIUM", "newValue": 3 },
+  { "contentType": "NOT_FED", "priority": "LOW", "newValue": 2 },
+  { "contentType": "CARE_EVENT", "priority": "HIGH", "newValue": "VET" },
+  { "contentType": "CARE_EVENT", "priority": "HIGH", "newValue": "MEDICATED" },
+  { "contentType": "STATUS_UPDATE", "priority": "MEDIUM", "newValue": "STRAY" },
+  { "contentType": "STATUS_UPDATE", "priority": "MEDIUM", "newValue": "OWNER_UNKNOWN" },
+  { "contentType": "NOT_FED", "priority": "HIGH", "newValue": "4" },
+  { "contentType": "CONDITION_UPDATE", "priority": "HIGH", "newValue": "UNDERFED" },
+  { "contentType": "CONDITION_CRITICAL", "priority": "HIGH", "newValue": true }
+]

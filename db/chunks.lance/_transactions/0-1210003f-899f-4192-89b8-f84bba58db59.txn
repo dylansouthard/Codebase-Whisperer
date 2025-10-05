@@ -1,0 +1,5 @@
+$1210003f-899f-4192-89b8-f84bba58db59²$id ÿÿÿÿÿÿÿÿÿ*string08Zdefault(path ÿÿÿÿÿÿÿÿÿ*string08Zdefault,realpath ÿÿÿÿÿÿÿÿÿ*string08Zdefault,
+is_symlink ÿÿÿÿÿÿÿÿÿ*bool08Zdefault+relpath ÿÿÿÿÿÿÿÿÿ*string08Zdefault(lang ÿÿÿÿÿÿÿÿÿ*string08Zdefault*symbol ÿÿÿÿÿÿÿÿÿ*string08Zdefault,	chunk_idx ÿÿÿÿÿÿÿÿÿ*int3208Zdefault+content ÿÿÿÿÿÿÿÿÿ*string08Zdefault*sha256	 ÿÿÿÿÿÿÿÿÿ*string08Zdefault/content_sha
+ ÿÿÿÿÿÿÿÿÿ*string08Zdefault)mtime ÿÿÿÿÿÿÿÿÿ*double08Zdefault=vector ÿÿÿÿÿÿÿÿÿ*fixed_size_list:float:76808Zdefault"'
+lance.auto_cleanup.older_than14days"!
+lance.auto_cleanup.interval20

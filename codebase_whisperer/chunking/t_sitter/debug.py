@@ -1,5 +1,3 @@
-import os
-
 
 # codebase_whisperer/chunking/debug.py
 from __future__ import annotations

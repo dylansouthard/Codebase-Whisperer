@@ -4,7 +4,7 @@ import types
 import requests
 import pytest
 
-from codebase_whisperer.ollama import OllamaClient, OllamaError
+from codebase_whisperer.llm.ollama import OllamaClient, OllamaError
 
 class FakeResponse:
     """Minimal stand-in for requests.Response."""
@@ -37,7 +37,7 @@ def no_sleep(monkeypatch):
 
 def test__post_success(monkeypatch):
     calls = {}
-    def fake_post(url, json=None, timeout=None, stream=None):
+    def fake_post(url, json=None, timeout=None, stream=None, **kwargs):
         calls["last"] = (url, json, timeout, stream)
         return FakeResponse(status=200, json_data={"ok": True})
     monkeypatch.setattr(requests, "post", fake_post)
@@ -50,7 +50,7 @@ def test__post_success(monkeypatch):
 
 def test__post_retries_then_success(monkeypatch):
     attempts = {"n": 0}
-    def flaky_post(url, json=None, timeout=None, stream=None):
+    def flaky_post(url, json=None, timeout=None, stream=None, **kwargs):
         attempts["n"] += 1
         if attempts["n"] == 1:
             raise requests.exceptions.ConnectionError("boom")
@@ -63,7 +63,7 @@ def test__post_retries_then_success(monkeypatch):
     assert attempts["n"] == 2  # retried once
 
 def test__post_exhausts_retries_raises(monkeypatch):
-    def always_fail(url, json=None, timeout=None, stream=None):
+    def always_fail(url, json=None, timeout=None, stream=None, **kwargs):
         raise requests.exceptions.Timeout("slow")
     monkeypatch.setattr(requests, "post", always_fail)
 
@@ -75,7 +75,7 @@ def test__post_exhausts_retries_raises(monkeypatch):
 def test_embed_multiple_texts(monkeypatch):
     calls = {"count": 0, "payloads": []}
 
-    def post_embeddings(url, json=None, timeout=None, stream=None):
+    def post_embeddings(url, json=None, timeout=None, stream=None, **kwargs):
         calls["count"] += 1
         calls["payloads"].append(json)
         # Return a 2-dim vector to make assertions simple
@@ -92,7 +92,7 @@ def test_embed_multiple_texts(monkeypatch):
     assert calls["payloads"][0]["prompt"] == "a"
 
 def test_chat_non_stream(monkeypatch):
-    def post_chat(url, json=None, timeout=None, stream=None):
+    def post_chat(url, json=None, timeout=None, stream=None, **kwargs):
         return FakeResponse(status=200, json_data={"message": {"content": "hello"}})
     monkeypatch.setattr(requests, "post", post_chat)
 
@@ -108,7 +108,7 @@ def test_chat_stream_emits_and_collects(monkeypatch):
         json.dumps({"message": {"content": "!"}}),
         json.dumps({"done": True}),
     ]
-    def post_chat(url, json=None, timeout=None, stream=None):
+    def post_chat(url, json=None, timeout=None, stream=None, **kwargs):
         assert stream is True
         return FakeResponse(status=200, lines=lines)
     monkeypatch.setattr(requests, "post", post_chat)
@@ -134,7 +134,7 @@ def test_chat_stream_handles_non_message_lines(monkeypatch):
         json.dumps({"message": {"content": "B"}}),
         json.dumps({"done": True}),
     ]
-    def post_chat(url, json=None, timeout=None, stream=None):
+    def post_chat(url, json=None, timeout=None, stream=None, **kwargs):
         return FakeResponse(status=200, lines=lines)
     monkeypatch.setattr(requests, "post", post_chat)
 
